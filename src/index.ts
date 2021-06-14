@@ -1,5 +1,5 @@
 import config from './config';
-import { App, Router } from './server';
+import { App, Router, Middlewares } from './server';
 import { SqlManager, Psql } from './database';
 
 const initDatabase = async () => {
@@ -8,9 +8,9 @@ const initDatabase = async () => {
 };
 
 const initServer = async () => {
-  const rt = new Router();
   const server = new App();
-  server.addMainRouter(rt.router);
+  server.addServerMiddlewares(new Middlewares(server.app));
+  server.addMainRouter(new Router().router);
   await server.start(config.port);
 };
 

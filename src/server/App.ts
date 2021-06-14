@@ -1,5 +1,6 @@
 import express, { Application, Router } from 'express';
-import { Logger, HTTPFunction } from '../utils';
+import { Logger } from '../utils';
+import { Middlewares } from './Middlewares';
 
 export class App {
   private _app: Application;
@@ -14,8 +15,8 @@ export class App {
     return this._app;
   }
 
-  addServerMiddlewares(midd: () => HTTPFunction | HTTPFunction) {
-    this._app.use(midd);
+  addServerMiddlewares(midd: Middlewares) {
+    this._app = midd.applyMiddlewares();
   }
 
   addMainRouter(router: Router) {

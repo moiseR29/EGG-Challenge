@@ -6,7 +6,7 @@ import {
   Router as ExpressRouter,
 } from 'express';
 import { HTTP_STATUS } from '../utils';
-//import {} from '../utils';
+import { AccountController } from '../business/account/extern';
 
 export class Router {
   private _router: ExpressRouter;
@@ -22,6 +22,7 @@ export class Router {
 
   private configure(): void {
     this.addHealtyEndoint();
+    this.applyEndpoint();
     this.notExistsEndpoint();
   }
 
@@ -34,6 +35,11 @@ export class Router {
           .send('Welcome to EGG-Challenge Server');
       },
     );
+  }
+
+  private applyEndpoint(): void {
+    const accountController = new AccountController(this._router);
+    this._router.use('/api', accountController.router);
   }
 
   private notExistsEndpoint(): void {
