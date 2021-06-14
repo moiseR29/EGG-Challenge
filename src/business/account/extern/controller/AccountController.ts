@@ -10,11 +10,8 @@ export class AccountController {
   }
 
   get router(): Router {
-    this._router.post('/account/login', new LoginController().login);
-    this._router.post(
-      '/account/create',
-      new CreateAccountController().createAccount,
-    );
+    this._router.post('/login', new LoginController().login);
+    this._router.post('/account', new CreateAccountController().createAccount);
     return this._router;
   }
 }

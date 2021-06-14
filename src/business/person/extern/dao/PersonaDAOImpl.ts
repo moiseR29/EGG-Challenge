@@ -1,6 +1,6 @@
-import { Person, PersonDAO } from '../domain';
-import { SqlManager, Sql } from '../../../database';
-import { Logger } from '../../../utils';
+import { Person, PersonDAO } from '../../domain';
+import { SqlManager, Sql } from '../../../../database';
+import { Logger } from '../../../../utils';
 
 const convertToCamel = (data: any): Person => ({
   personId: data.person_id,

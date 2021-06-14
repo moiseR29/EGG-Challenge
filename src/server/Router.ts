@@ -7,6 +7,8 @@ import {
 } from 'express';
 import { HTTP_STATUS } from '../utils';
 import { AccountController } from '../business/account/extern';
+import { PersonController } from '../business/person/extern';
+import config from '../config';
 
 export class Router {
   private _router: ExpressRouter;
@@ -38,8 +40,10 @@ export class Router {
   }
 
   private applyEndpoint(): void {
-    const accountController = new AccountController(this._router);
-    this._router.use('/api', accountController.router);
+    let businessRouter: ExpressRouter = new AccountController(this._router)
+      .router;
+    businessRouter = new PersonController(this.router).router;
+    this._router.use(config.server.basePath, businessRouter);
   }
 
   private notExistsEndpoint(): void {

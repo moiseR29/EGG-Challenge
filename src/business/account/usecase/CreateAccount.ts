@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { AccountDAO, Account } from '../domain';
 import { PersonDAO } from '../../person/domain';
-import { Logger } from '../../../utils';
+import { Logger, CryptManager } from '../../../utils';
 
 export interface CreateAccountPayload {
   name: string;
@@ -45,10 +45,11 @@ export class CreateAccount {
     });
     this._log.info('Person Created');
 
-    // TODO add crypt password
+    const passwordCrypt = await CryptManager.hash(this._payload.password);
+
     const accountCreated = await this._accountDAO.create({
       username: this._payload.username,
-      password: this._payload.password,
+      password: passwordCrypt,
       personId: personCreated[0].personId!,
     });
     this._log.info('Account Created');

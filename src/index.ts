@@ -11,7 +11,7 @@ const initServer = async () => {
   const server = new App();
   server.addServerMiddlewares(new Middlewares(server.app));
   server.addMainRouter(new Router().router);
-  await server.start(config.port);
+  await server.start(config.server.port);
 };
 
 const main = async () => {

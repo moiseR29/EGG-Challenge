@@ -1,5 +1,5 @@
 import { AccountDAO } from '../domain';
-import { Logger } from '../../../utils';
+import { Logger, CryptManager } from '../../../utils';
 
 export interface LoginPayload {
   username: string;
@@ -36,14 +36,21 @@ export class Login {
       );
     }
 
-    // TODO check password
-    if (this._payload.password !== accountExists[0].password) {
+    if (
+      !(await CryptManager.compare(
+        this._payload.password,
+        accountExists[0].password!,
+      ))
+    ) {
       this._log.error(`El password es incorrecto`);
       throw new Error(`El password es incorrecto`);
     }
 
+    const user = accountExists[0];
+    delete user.password;
+
     return {
-      token: 'token',
+      token: CryptManager.generateToken(user),
       message: 'Login successfully',
     };
   }

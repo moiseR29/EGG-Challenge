@@ -8,5 +8,12 @@ export const DefaultConfig: Config = {
     database: 'challenge',
     host: 'localhost',
   },
-  port: 8080,
+  session: {
+    salt: 10,
+    secret: 'supersecretisimo',
+  },
+  server: {
+    port: 8080,
+    basePath: '/api',
+  },
 };

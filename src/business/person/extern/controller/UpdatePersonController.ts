@@ -1,30 +1,29 @@
 import { Request, Response, NextFunction } from 'express';
 import { Logger, HTTP_STATUS } from '../../../../utils';
-import { AccountDAOImpl } from '../dao';
-import { CreateAccount } from '../../usecase';
-import { PersonaDAOImpl } from '../../../person/extern';
+import { PersonaDAOImpl } from '../dao';
+import { AccountDAOImpl } from '../../../account/extern';
+import { UpdatePerson } from '../../usecase';
 
-export class CreateAccountController {
-  async createAccount(
+export class UpdatePersonController {
+  async updatePerson(
     req: Request,
     res: Response,
     _next: NextFunction,
   ): Promise<any> {
-    const Log: Logger = new Logger('Create Account');
+    const Log: Logger = new Logger('Update Person');
     try {
-      const accountDAO = new AccountDAOImpl();
-      const personaDAO = new PersonaDAOImpl();
+      const { jwtData, ...rest } = req.body;
 
-      const useCase = new CreateAccount({
-        accountDAO,
+      const personaDAO = new PersonaDAOImpl();
+      const accountDAO = new AccountDAOImpl();
+
+      const useCase = new UpdatePerson({
         personaDAO,
         payload: {
-          username: req.body.username,
-          password: req.body.password,
-          dni: req.body.dni,
-          name: req.body.name,
-          lastname: req.body.lastname,
+          ...rest,
         },
+        jwtData,
+        accountDAO,
       });
 
       const responseUseCase = await useCase.run();
