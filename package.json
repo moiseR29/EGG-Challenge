@@ -7,7 +7,8 @@
     "build": "tsc",
     "test": "echo create",
     "prestart": "npm run build",
-    "start": "node build/index"
+    "start": "npm run start:deploy",
+    "start:deploy": "node build/index"
   },
   "repository": {
     "type": "git",

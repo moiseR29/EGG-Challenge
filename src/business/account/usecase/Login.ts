@@ -34,10 +34,8 @@ export class Login {
     let accountExists: Array<Account | ReferenceAccount> =
       await this._accountDAO.selectByUsername(this._payload.username);
 
-    if (!accountExists.length) {
-      accountExists = await this.verifyIfAccountIfReferr();
-      this._isRefer = true;
-    }
+    if (!accountExists.length)
+      accountExists = await this.verifyIfAccountIsReferr();
 
     const user = accountExists[0];
 
@@ -48,13 +46,15 @@ export class Login {
 
     delete user.password;
 
+    this._log.info(`is Refer: ${this._isRefer}`);
+
     return {
       token: CryptManager.generateToken({ ...user, isRefer: this._isRefer }),
       message: 'Login successfully',
     };
   }
 
-  async verifyIfAccountIfReferr(): Promise<Array<ReferenceAccount>> {
+  async verifyIfAccountIsReferr(): Promise<Array<ReferenceAccount>> {
     const accountReffer = await this._referenceAccountDAO.selectByUsername(
       this._payload.username,
     );
@@ -66,6 +66,7 @@ export class Login {
         `No se encontro cuenta con el username ${this._payload.username}`,
       );
     }
+    this._isRefer = true;
     return accountReffer;
   }
 }

@@ -54,6 +54,10 @@ export class CreateAccount {
     });
     this._log.info('Account Created');
 
-    return accountCreated[0];
+    const response = accountCreated[0];
+
+    delete response.password;
+
+    return response;
   }
 }

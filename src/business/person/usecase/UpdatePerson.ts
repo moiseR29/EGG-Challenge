@@ -19,7 +19,7 @@ export interface UpdatePersonData {
   accountDAO: AccountDAO;
   referenceAccountDAO: ReferenceAccountDAO;
   payload: UpdatePersonPayload;
-  tokenData: any;
+  tokenData: TokenData;
 }
 
 export class UpdatePerson {
@@ -47,11 +47,11 @@ export class UpdatePerson {
       throw new Error('Person Not Exists');
     }
 
-    const account = await this.getAccountToken();
+    const account = await this.getAccountByToken();
 
     if (
       account[0].personId! !== oldPerson[0].personId &&
-      !this.verifyAccoutIsReffered()
+      !(await this.verifyAccoutIsReffered())
     ) {
       this._log.error('Not have permission');
       throw new Error('Not have permission');
@@ -66,22 +66,23 @@ export class UpdatePerson {
   }
 
   private async verifyAccoutIsReffered(): Promise<boolean> {
+    if (this._tokenData.isRefer) {
+      this._log.error('Not have permission');
+      throw new Error('Not have permission');
+    }
     return !!(
       await this._referenceAccountDAO.selectByReffer(this._tokenData.accountId!)
     ).length;
   }
 
-  private async getAccountToken(): Promise<Array<Account | ReferenceAccount>> {
-    let account: Array<Account | ReferenceAccount>;
-    if (this._tokenData.isRefer) {
-      account = await this._referenceAccountDAO.selectByUsername(
+  private async getAccountByToken(): Promise<
+    Array<Account | ReferenceAccount>
+  > {
+    if (this._tokenData.isRefer)
+      return await this._referenceAccountDAO.selectByUsername(
         this._tokenData.username,
       );
-    } else {
-      account = await this._accountDAO.selectByUsername(
-        this._tokenData.username,
-      );
-    }
-    return account;
+
+    return await this._accountDAO.selectByUsername(this._tokenData.username);
   }
 }

@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import { ReferenceCreateAccountController } from './CreateReferenceAccountController';
+import { GetReferenceAccountController } from './GetReferenceAccount';
 import { JWTMiddleware } from '../../../common/service';
 
 export class ReferenceAccountController {
@@ -14,6 +15,11 @@ export class ReferenceAccountController {
       '/referenceaccount',
       [new JWTMiddleware().jwt],
       new ReferenceCreateAccountController().createAccount,
+    );
+    this._router.get(
+      '/referenceaccount',
+      [new JWTMiddleware().jwt],
+      new GetReferenceAccountController().getAccount,
     );
     return this._router;
   }
