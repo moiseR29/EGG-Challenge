@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { Logger, HTTP_STATUS, TOKEN_HEADER } from '../../../../utils';
 import { AccountDAOImpl } from '../dao';
+import { RefenrenceAccountDAOImpl } from '../../../referenceAccount/extern';
 import { Login } from '../../usecase';
 
 export class LoginController {
@@ -8,9 +9,11 @@ export class LoginController {
     const Log: Logger = new Logger('Login');
     try {
       const accountDAO = new AccountDAOImpl();
+      const referenceAccountDAO = new RefenrenceAccountDAOImpl();
 
       const useCase = new Login({
         accountDAO,
+        referenceAccountDAO,
         payload: {
           username: req.body.username,
           password: req.body.password,

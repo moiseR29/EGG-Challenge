@@ -1,7 +1,11 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { PersonDAO, Person } from '../domain';
-import { AccountDAO } from '../../account/domain';
-import { Logger } from '../../../utils';
+import { Account, AccountDAO } from '../../account/domain';
+import {
+  ReferenceAccountDAO,
+  ReferenceAccount,
+} from '../../referenceAccount/domain';
+import { Logger, TokenData } from '../../../utils';
 
 export interface UpdatePersonPayload {
   name?: string;
@@ -13,21 +17,24 @@ export interface UpdatePersonPayload {
 export interface UpdatePersonData {
   personaDAO: PersonDAO;
   accountDAO: AccountDAO;
+  referenceAccountDAO: ReferenceAccountDAO;
   payload: UpdatePersonPayload;
-  jwtData: any;
+  tokenData: any;
 }
 
 export class UpdatePerson {
   private _personDAO: PersonDAO;
   private _accountDAO: AccountDAO;
+  private _referenceAccountDAO: ReferenceAccountDAO;
   private _payload: UpdatePersonPayload;
-  private _jwtData: any;
+  private _tokenData: TokenData;
   private _log: Logger;
 
   constructor(data: UpdatePersonData) {
     this._personDAO = data.personaDAO;
     this._accountDAO = data.accountDAO;
-    this._jwtData = data.jwtData;
+    this._referenceAccountDAO = data.referenceAccountDAO;
+    this._tokenData = data.tokenData;
     this._payload = data.payload;
     this._log = new Logger('Update Person Use Case');
   }
@@ -40,11 +47,12 @@ export class UpdatePerson {
       throw new Error('Person Not Exists');
     }
 
-    const account = await this._accountDAO.selectByUsername(
-      this._jwtData.username,
-    );
+    const account = await this.getAccountToken();
 
-    if (account[0].personId! !== oldPerson[0].personId) {
+    if (
+      account[0].personId! !== oldPerson[0].personId &&
+      !this.verifyAccoutIsReffered()
+    ) {
       this._log.error('Not have permission');
       throw new Error('Not have permission');
     }
@@ -55,5 +63,25 @@ export class UpdatePerson {
     };
 
     return (await this._personDAO.update(newPerson))[0];
+  }
+
+  private async verifyAccoutIsReffered(): Promise<boolean> {
+    return !!(
+      await this._referenceAccountDAO.selectByReffer(this._tokenData.accountId!)
+    ).length;
+  }
+
+  private async getAccountToken(): Promise<Array<Account | ReferenceAccount>> {
+    let account: Array<Account | ReferenceAccount>;
+    if (this._tokenData.isRefer) {
+      account = await this._referenceAccountDAO.selectByUsername(
+        this._tokenData.username,
+      );
+    } else {
+      account = await this._accountDAO.selectByUsername(
+        this._tokenData.username,
+      );
+    }
+    return account;
   }
 }

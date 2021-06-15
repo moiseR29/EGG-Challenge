@@ -1,32 +1,34 @@
 import { Request, Response, NextFunction } from 'express';
 import { Logger, HTTP_STATUS } from '../../../../utils';
-import { PersonaDAOImpl } from '../dao';
+import { RefenrenceAccountDAOImpl } from '../dao';
+import { CreateReferenceAccount } from '../../useCase';
+import { PersonaDAOImpl } from '../../../person/extern';
 import { AccountDAOImpl } from '../../../account/extern';
-import { RefenrenceAccountDAOImpl } from '../../../referenceAccount/extern';
-import { UpdatePerson } from '../../usecase';
 
-export class UpdatePersonController {
-  async updatePerson(
+export class ReferenceCreateAccountController {
+  async createAccount(
     req: Request,
     res: Response,
     _next: NextFunction,
   ): Promise<any> {
-    const Log: Logger = new Logger('Update Person');
+    const Log: Logger = new Logger('Reference Create Account');
     try {
-      const { tokenData, ...rest } = req.body;
-
-      const personaDAO = new PersonaDAOImpl();
       const accountDAO = new AccountDAOImpl();
+      const personaDAO = new PersonaDAOImpl();
       const referenceAccountDAO = new RefenrenceAccountDAOImpl();
 
-      const useCase = new UpdatePerson({
+      const useCase = new CreateReferenceAccount({
+        referenceAccountDAO,
+        accountDAO,
         personaDAO,
         payload: {
-          ...rest,
+          username: req.body.username,
+          password: req.body.password,
+          dni: req.body.dni,
+          name: req.body.name,
+          lastname: req.body.lastname,
         },
-        tokenData,
-        accountDAO,
-        referenceAccountDAO,
+        tokenData: req.body.tokenData,
       });
 
       const responseUseCase = await useCase.run();

@@ -3,6 +3,13 @@ import { sign, verify } from 'jsonwebtoken';
 import config from '../config';
 import { Logger } from './Logger';
 
+export interface TokenData {
+  accountId?: number;
+  username: string;
+  personId?: number;
+  isRefer: boolean;
+}
+
 class CryptManager {
   async hash(label: string): Promise<string> {
     return await hash(label, config.session.salt);
@@ -12,14 +19,14 @@ class CryptManager {
     return await compare(labelToCompare, hash);
   }
 
-  generateToken(data: any): string {
+  generateToken(data: TokenData): string {
     return sign(data, config.session.secret, { expiresIn: 60 * 60 });
   }
 
-  verifyToken(token: string): any {
+  verifyToken(token: string): TokenData {
     const Log: Logger = new Logger('JWT');
     try {
-      return verify(token, config.session.secret);
+      return <TokenData>verify(token, config.session.secret);
     } catch (error) {
       Log.error(error.message);
       throw new Error(error.message);

@@ -6,9 +6,10 @@ import {
   Router as ExpressRouter,
 } from 'express';
 import { HTTP_STATUS } from '../utils';
+import config from '../config';
 import { AccountController } from '../business/account/extern';
 import { PersonController } from '../business/person/extern';
-import config from '../config';
+import { ReferenceAccountController } from '../business/referenceAccount/extern';
 
 export class Router {
   private _router: ExpressRouter;
@@ -43,6 +44,7 @@ export class Router {
     let businessRouter: ExpressRouter = new AccountController(this._router)
       .router;
     businessRouter = new PersonController(this.router).router;
+    businessRouter = new ReferenceAccountController(this._router).router;
     this._router.use(config.server.basePath, businessRouter);
   }
 

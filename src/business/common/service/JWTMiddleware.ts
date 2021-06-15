@@ -19,7 +19,7 @@ export class JWTMiddleware {
           .send({ message: 'No Tenes permisos' });
       }
 
-      req.body.jwtData = CryptManager.verifyToken(token);
+      req.body.tokenData = CryptManager.verifyToken(token);
 
       next();
     } catch (error) {
