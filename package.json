@@ -8,7 +8,10 @@
     "test": "echo create",
     "prestart": "npm run build",
     "start": "npm run start:deploy",
-    "start:deploy": "node build/index"
+    "start:deploy": "node build/index",
+    "db:local": "sh ./scripts/db-local.sh",
+    "db:migration": "sh ./scripts/migrations.sh dev",
+    "db:migration:test": "sh ./scripts/migrations.sh test"
   },
   "repository": {
     "type": "git",
@@ -32,6 +35,8 @@
     "@types/pg": "^8.6.0",
     "@typescript-eslint/eslint-plugin": "^4.25.0",
     "@typescript-eslint/parser": "^4.25.0",
+    "db-migrate": "^0.11.12",
+    "db-migrate-pg": "^1.2.2",
     "eslint": "^7.27.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^3.4.0",

@@ -1,0 +1,19 @@
+{
+  "dev": {
+    "host": "localhost",
+    "user": "egg",
+    "password": "password",
+    "database": "challenge",
+    "port": 5432,
+    "driver": "pg"
+  },
+  "test": {
+    "host": "localhost",
+    "user": "egg",
+    "password": "password",
+    "database": "test",
+    "port": 5432,
+    "driver": "pg"
+  },
+  "sql-file": true
+}

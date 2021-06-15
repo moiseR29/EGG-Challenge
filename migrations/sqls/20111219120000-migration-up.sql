@@ -36,3 +36,4 @@ CREATE TABLE IF NOT EXISTS business.reference_account(
 
 ALTER TABLE business.reference_account ADD FOREIGN KEY ("account_id") REFERENCES business.account("account_id");
 ALTER TABLE business.reference_account ADD FOREIGN KEY ("person_id") REFERENCES business.person("person_id");
+
