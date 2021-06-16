@@ -14,6 +14,7 @@ export interface Session {
 export interface Server {
   port: number;
   basePath: string;
+  env: string;
 }
 
 export interface Config {

@@ -46,8 +46,6 @@ export class Login {
 
     delete user.password;
 
-    this._log.info(`is Refer: ${this._isRefer}`);
-
     return {
       token: CryptManager.generateToken({ ...user, isRefer: this._isRefer }),
       message: 'Login successfully',

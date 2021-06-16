@@ -1,11 +1,11 @@
 import { Config } from './config';
 
-export const DefaultConfig: Config = {
+export const TestConfig: Config = {
   database: {
     port: 5432,
     user: 'egg',
     password: 'password',
-    database: 'challenge',
+    database: 'test',
     host: 'localhost',
   },
   session: {
@@ -15,6 +15,6 @@ export const DefaultConfig: Config = {
   server: {
     port: 8080,
     basePath: '/api',
-    env: 'develop',
+    env: 'test',
   },
 };

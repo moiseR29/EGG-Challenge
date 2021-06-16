@@ -16,7 +16,9 @@
     "node_modules",
     "**/__tests__/**/*",
     "**/__mocks__/**/*",
-    "build"
+    "build",
+    "scripts",
+    "migrations"
   ],
   "include": [
     "src/"
