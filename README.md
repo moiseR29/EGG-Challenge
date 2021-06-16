@@ -84,7 +84,7 @@
 
 ### LOGIN
 
-- post -> host:port/api/referencesaccount
+- post -> host:port/api/login
 - body 
 	```json
 	{
