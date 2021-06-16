@@ -20,5 +20,6 @@ export const TestConfig: Config = {
     basePath: '/api',
     env: 'test',
     log: false,
+    accessToken: 'egg',
   },
 };

@@ -21,5 +21,6 @@ export const DefaultConfig: Config = {
     basePath: '/api',
     env: 'develop',
     log: true,
+    accessToken: 'egg',
   },
 };

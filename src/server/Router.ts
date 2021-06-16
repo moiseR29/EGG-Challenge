@@ -10,6 +10,7 @@ import config from '../config';
 import { AccountController } from '../business/account/extern';
 import { PersonController } from '../business/person/extern';
 import { ReferenceAccountController } from '../business/referenceAccount/extern';
+import { AccessTokenMiddleware } from '../business/common/service';
 
 export class Router {
   private _router: ExpressRouter;
@@ -45,12 +46,17 @@ export class Router {
       .router;
     businessRouter = new PersonController(this.router).router;
     businessRouter = new ReferenceAccountController(this._router).router;
-    this._router.use(config.server.basePath, businessRouter);
+    this._router.use(
+      config.server.basePath,
+      [new AccessTokenMiddleware().accessToken],
+      businessRouter,
+    );
   }
 
   private notExistsEndpoint(): void {
     this._router.use(
       '*',
+      [new AccessTokenMiddleware().accessToken],
       (_req: Request, res: Response, _next: NextFunction) => {
         return res.status(HTTP_STATUS.NOT_FOUND).send('Not Found endpoint');
       },

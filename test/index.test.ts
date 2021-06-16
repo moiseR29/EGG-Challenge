@@ -5,6 +5,8 @@ const app = preparedServer().app;
 
 let token = '';
 let refferToken = '';
+const tokenMicroService =
+  '$2b$10$vGfmd5x0p8ROGW7.klgDHOamOQAzq4LVlhv5hxoS53QcncsQRHbGC';
 
 describe('EGG CHALLENGE TESTS', () => {
   beforeAll((done) => {
@@ -25,6 +27,7 @@ describe('EGG CHALLENGE TESTS', () => {
     test('ACCOUNT: ctevez | 201', () => {
       return request(app)
         .post('/api/account')
+        .set('x-access-token', tokenMicroService)
         .send({
           name: 'Carlos',
           lastname: 'Tevez',
@@ -46,6 +49,7 @@ describe('EGG CHALLENGE TESTS', () => {
     test('Login GET TOKEN | 200', () => {
       return request(app)
         .post('/api/login')
+        .set('x-access-token', tokenMicroService)
         .send({
           username: 'ctevez',
           password: 'azulyoro',
@@ -61,6 +65,7 @@ describe('EGG CHALLENGE TESTS', () => {
     test('REFERENCE ACCOUNT: mpalermo | 201', () => {
       return request(app)
         .post('/api/referenceaccount')
+        .set('x-access-token', tokenMicroService)
         .set('x-egg-token', token)
         .send({
           name: 'Martin',
@@ -83,6 +88,7 @@ describe('EGG CHALLENGE TESTS', () => {
     test('FAILED | NOT SEND PAYLOAD', () => {
       return request(app)
         .post('/api/account')
+        .set('x-access-token', tokenMicroService)
         .then((data) => {
           expect(data.statusCode).toBe(400);
           expect(data.body).toHaveProperty('message');
@@ -92,6 +98,7 @@ describe('EGG CHALLENGE TESTS', () => {
     test('FAILED CREATED REFERECE | NOT HAVE PERMISSION', () => {
       return request(app)
         .post('/api/referenceaccount')
+        .set('x-access-token', tokenMicroService)
         .send({
           name: 'Nicolas',
           lastname: 'Burdisso',
@@ -111,6 +118,7 @@ describe('EGG CHALLENGE TESTS', () => {
     test('FAILED Username not found | 400', () => {
       return request(app)
         .post('/api/login')
+        .set('x-access-token', tokenMicroService)
         .send({
           username: 'user123',
           password: 'fake',
@@ -125,6 +133,7 @@ describe('EGG CHALLENGE TESTS', () => {
     test('FAILED Incorrect Password | 400', () => {
       return request(app)
         .post('/api/login')
+        .set('x-access-token', tokenMicroService)
         .send({
           username: 'ctevez',
           password: 'fake',
@@ -139,6 +148,7 @@ describe('EGG CHALLENGE TESTS', () => {
     test('Reference GET TOKEN | 200', () => {
       return request(app)
         .post('/api/login')
+        .set('x-access-token', tokenMicroService)
         .send({
           username: 'mpalermo',
           password: 'azulyoro',
@@ -156,6 +166,7 @@ describe('EGG CHALLENGE TESTS', () => {
     test('Owner Account -> Your Person | 200', () => {
       return request(app)
         .put('/api/person')
+        .set('x-access-token', tokenMicroService)
         .set('x-egg-token', token)
         .send({
           personId: 1,
@@ -173,6 +184,7 @@ describe('EGG CHALLENGE TESTS', () => {
     test('Owner Account -> Your Reffer Person | 200', () => {
       return request(app)
         .put('/api/person')
+        .set('x-access-token', tokenMicroService)
         .set('x-egg-token', token)
         .send({
           personId: 2,
@@ -190,6 +202,7 @@ describe('EGG CHALLENGE TESTS', () => {
     test('Reffer Account -> Your Person | 200', () => {
       return request(app)
         .put('/api/person')
+        .set('x-access-token', tokenMicroService)
         .set('x-egg-token', refferToken)
         .send({
           personId: 2,
@@ -207,6 +220,7 @@ describe('EGG CHALLENGE TESTS', () => {
     test('Reffer Account -> Owner Person | 400', () => {
       return request(app)
         .put('/api/person')
+        .set('x-access-token', tokenMicroService)
         .set('x-egg-token', refferToken)
         .send({
           personId: 1,
@@ -222,6 +236,7 @@ describe('EGG CHALLENGE TESTS', () => {
     test('Person not exist | 400', () => {
       return request(app)
         .put('/api/person')
+        .set('x-access-token', tokenMicroService)
         .set('x-egg-token', token)
         .send({
           personId: 3,
@@ -239,6 +254,7 @@ describe('EGG CHALLENGE TESTS', () => {
     test('Owner Account Get Your Reffer | 200', () => {
       return request(app)
         .get('/api/referenceaccount')
+        .set('x-access-token', tokenMicroService)
         .set('x-egg-token', token)
         .then((data) => {
           expect(data.statusCode).toBe(200);
@@ -252,6 +268,7 @@ describe('EGG CHALLENGE TESTS', () => {
     test('Reffer Account Get Your Reffer | 400', () => {
       return request(app)
         .get('/api/referenceaccount')
+        .set('x-access-token', tokenMicroService)
         .set('x-egg-token', refferToken)
         .then((data) => {
           expect(data.statusCode).toBe(400);

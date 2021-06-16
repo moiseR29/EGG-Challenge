@@ -16,6 +16,7 @@ export interface Server {
   basePath: string;
   env: string;
   log: boolean;
+  accessToken: string;
 }
 
 export interface Config {

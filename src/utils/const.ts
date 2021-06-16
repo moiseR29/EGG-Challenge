@@ -9,4 +9,5 @@ export enum HTTP_STATUS {
   REQUEST_TIMEOUT = 408,
 }
 
-export const TOKEN_HEADER = 'x-egg-token';
+export const TOKEN_EGG_HEADER = 'x-egg-token';
+export const TOKEN_ACCESS_HEADER = 'x-access-token';

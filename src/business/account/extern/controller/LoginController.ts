@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { Logger, HTTP_STATUS, TOKEN_HEADER } from '../../../../utils';
+import { Logger, HTTP_STATUS, TOKEN_EGG_HEADER } from '../../../../utils';
 import { AccountDAOImpl } from '../dao';
 import { RefenrenceAccountDAOImpl } from '../../../referenceAccount/extern';
 import { Login } from '../../usecase';
@@ -21,7 +21,7 @@ export class LoginController {
       });
 
       const responseUseCase = await useCase.run();
-      res.setHeader(TOKEN_HEADER, responseUseCase.token);
+      res.setHeader(TOKEN_EGG_HEADER, responseUseCase.token);
       return res
         .status(HTTP_STATUS.OK)
         .send({ message: responseUseCase.message });
