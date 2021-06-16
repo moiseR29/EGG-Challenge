@@ -15,6 +15,7 @@ export interface Server {
   port: number;
   basePath: string;
   env: string;
+  log: boolean;
 }
 
 export interface Config {

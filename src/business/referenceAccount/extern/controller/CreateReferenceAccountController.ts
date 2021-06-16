@@ -32,7 +32,7 @@ export class ReferenceCreateAccountController {
       });
 
       const responseUseCase = await useCase.run();
-      return res.status(HTTP_STATUS.OK).send(responseUseCase);
+      return res.status(HTTP_STATUS.CREATED).send(responseUseCase);
     } catch (error) {
       Log.error(error.message);
       return res

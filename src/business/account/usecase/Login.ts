@@ -40,8 +40,8 @@ export class Login {
     const user = accountExists[0];
 
     if (!(await CryptManager.compare(this._payload.password, user.password!))) {
-      this._log.error(`El password es incorrecto`);
-      throw new Error(`El password es incorrecto`);
+      this._log.error(`Incorrect password`);
+      throw new Error(`Incorrect password`);
     }
 
     delete user.password;
@@ -57,12 +57,8 @@ export class Login {
       this._payload.username,
     );
     if (!accountReffer.length) {
-      this._log.error(
-        `No se encontro cuenta con el username ${this._payload.username}`,
-      );
-      throw new Error(
-        `No se encontro cuenta con el username ${this._payload.username}`,
-      );
+      this._log.error(`The username ${this._payload.username} was not found`);
+      throw new Error(`The username ${this._payload.username} was not found`);
     }
     this._isRefer = true;
     return accountReffer;

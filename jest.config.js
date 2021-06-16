@@ -10,9 +10,11 @@ module.exports = {
     '<rootDir>/node_modules/',
   ],
   coverageDirectory: '<rootDir>/coverage/',
-  verbose: true,
+  testMatch: ['**/test/**/*.test.+(ts)'],
+  //verbose: true,
   transform: {
     '^.+\\.(ts|tsx)$': 'ts-jest',
   },
+  forceExit: true,
   //testTimeout: 10000,
 };

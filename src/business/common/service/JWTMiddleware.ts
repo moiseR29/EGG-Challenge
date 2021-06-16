@@ -16,7 +16,7 @@ export class JWTMiddleware {
         Log.error(`Token not exists`);
         return res
           .status(HTTP_STATUS.UNAUTHORIZED)
-          .send({ message: 'No Tenes permisos' });
+          .send({ message: 'You don´t have permissions' });
       }
 
       req.body.tokenData = CryptManager.verifyToken(token);

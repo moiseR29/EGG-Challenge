@@ -11,8 +11,13 @@ services:
   app:
     build:
       context: .
+    environment: 
+      DB_HOST: postgres 
+      NODE_ENV: compose
     depends_on: 
       - postgres
     ports:
       - "8080:8080"
+    links: 
+      - postgres
 

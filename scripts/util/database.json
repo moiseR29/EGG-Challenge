@@ -12,7 +12,7 @@
     "user": "egg",
     "password": "password",
     "database": "test",
-    "port": 5432,
+    "port": 5433,
     "driver": "pg"
   },
   "sql-file": true

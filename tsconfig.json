@@ -18,7 +18,8 @@
     "**/__mocks__/**/*",
     "build",
     "scripts",
-    "migrations"
+    "migrations",
+    "test"
   ],
   "include": [
     "src/"

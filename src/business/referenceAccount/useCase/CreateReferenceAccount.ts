@@ -40,8 +40,8 @@ export class CreateReferenceAccount {
     const personExists = await this._personDAO.selectByDni(this._payload.dni);
 
     if (personExists.length) {
-      this._log.error('La Persona ya existe');
-      throw new Error('La Persona ya existe');
+      this._log.error('Person already exists');
+      throw new Error('Person already exists');
     }
 
     const account = await this._accountDAO.selectById(
@@ -49,8 +49,8 @@ export class CreateReferenceAccount {
     );
 
     if (!account.length) {
-      this._log.error('La Cuenta no existe');
-      throw new Error('La Cuenta no existe');
+      this._log.error('The account doesn´t exist');
+      throw new Error('The account doesn´t exist');
     }
 
     const personCreated = await this._personDAO.create({

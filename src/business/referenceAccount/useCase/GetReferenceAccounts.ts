@@ -20,8 +20,8 @@ export class GetReferenceAccount {
   async run(): Promise<Array<ReferenceAccount>> {
     this._log.info('Get References Accout');
     if (this._tokenData.isRefer) {
-      this._log.error(`Tu cuenta no es referente`);
-      throw new Error(`Tu cuenta no es referente`);
+      this._log.error(`Your account isn´t a referrer`);
+      throw new Error(`Your account isn´t a referrer`);
     }
     return (
       await this._referenceAccountDAO.selectByReffer(this._tokenData.accountId!)

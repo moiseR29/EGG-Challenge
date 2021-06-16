@@ -1,4 +1,7 @@
 import { Config } from './config';
+import * as dotenv from 'dotenv';
+
+dotenv.config({ path: `${__dirname.split('/build')[0]}/.env` });
 
 export const DefaultConfig: Config = {
   database: {
@@ -6,7 +9,8 @@ export const DefaultConfig: Config = {
     user: 'egg',
     password: 'password',
     database: 'challenge',
-    host: 'localhost',
+    // TODO in case use docker-compose, change this for postgres
+    host: process.env.DB_HOST ?? 'localhost',
   },
   session: {
     salt: 10,
@@ -16,5 +20,6 @@ export const DefaultConfig: Config = {
     port: 8080,
     basePath: '/api',
     env: 'develop',
+    log: true,
   },
 };

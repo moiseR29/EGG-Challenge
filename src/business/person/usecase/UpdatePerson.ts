@@ -43,8 +43,8 @@ export class UpdatePerson {
     const oldPerson = await this._personDAO.selectById(this._payload.personId);
 
     if (!oldPerson.length) {
-      this._log.error('Person Not Exists');
-      throw new Error('Person Not Exists');
+      this._log.error('Person not exist');
+      throw new Error('Person not exist');
     }
 
     const account = await this.getAccountByToken();
@@ -53,8 +53,8 @@ export class UpdatePerson {
       account[0].personId! !== oldPerson[0].personId &&
       !(await this.verifyAccoutIsReffered())
     ) {
-      this._log.error('Not have permission');
-      throw new Error('Not have permission');
+      this._log.error('You don´t have permissions');
+      throw new Error('You don´t have permissions');
     }
 
     const newPerson: Person = {
@@ -67,8 +67,8 @@ export class UpdatePerson {
 
   private async verifyAccoutIsReffered(): Promise<boolean> {
     if (this._tokenData.isRefer) {
-      this._log.error('Not have permission');
-      throw new Error('Not have permission');
+      this._log.error('You don´t have permissions');
+      throw new Error('You don´t have permissions');
     }
     return !!(
       await this._referenceAccountDAO.selectByReffer(this._tokenData.accountId!)
